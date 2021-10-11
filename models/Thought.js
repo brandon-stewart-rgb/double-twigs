@@ -16,8 +16,18 @@ const ThoughtSchema = new Schema({
         type: String,
         required: true
     },
-    reactions : [{ type: Objectid, ref: 'Reaction'}]
+    reactions : [{ type: Schema.Types.ObjectId,  ref: 'Reaction'}]
+},
+
+{
+    toObject: {
+    virtuals: true
+    },
+    toJSON: {
+    virtuals: true 
+    }
 });
+
 
 
 ThoughtSchema.virtual('reactionCount').get(function(){
