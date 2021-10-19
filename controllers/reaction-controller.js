@@ -45,7 +45,7 @@ updateReaction({ params,body}, res) {
 },
 
 //delete Reaction
-deleteReaction({ param }, res){
+deleteReaction({ params }, res){
     Reaction.findOneAndDelete({ _id: params.id })
     .then(dbReactionData => {
         if(!dbReactionData){

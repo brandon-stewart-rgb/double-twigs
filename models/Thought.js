@@ -5,30 +5,30 @@ const ReactionSchema = new Schema(
 	{
 		reactionId: {
 			type: Schema.Types.ObjectId,
-			default: '',
+			default: " "
 		},
 		reactionBody: {
 			type: String,
 			required: true,
-			maxLength: 280,
+			maxLength: 280
 		},
 		username: {
 			type: String,
-			required: [true, 'username is required'],
+			required: [true, 'username is required']
 		},
 		createdAt: {
 			type: Date,
 			default: Date.now,
 			//    timestamps: true
 			get: (createdAtVal) =>
-				moment(createdAtVal).format('MMM DD, YYYY [at] hh:mm a'),
-		},
+				moment(createdAtVal).format('MMM DD, YYYY [at] hh:mm a')
+		}
 	},
 
 	{
 		toJSON: {
-			getters: true,
-		},
+			getters: true
+		}
 	}
 );
 
@@ -38,31 +38,31 @@ const ThoughtSchema = new Schema(
 			type: String,
 			required: [true, 'Thoughts are required'],
 			minLength: 1,
-			maxLength: 180,
+			maxLength: 180
 		},
 		createdAt: {
 			type: Date,
 			default: Date.now,
 			//    timestamps: true
 			get: (createdAtVal) =>
-				moment(createdAtVal).format('MMM DD, YYYY [at] hh:mm a'),
+				moment(createdAtVal).format('MMM DD, YYYY [at] hh:mm a')
 		},
 		username: {
 			type: String,
-			required: true,
+			required: true
 		},
 		// reactions : [{ type: Schema.Types.ObjectId,  ref: 'Reaction'}]
-		reactions: [ReactionSchema],
+		reactions: [ReactionSchema]
 	},
 
 	{
-		toObject: {
-			virtuals: true,
-		},
+		// toObject: {
+		// 	virtuals: true,
+		// },
 		toJSON: {
 			virtuals: true,
-			getters: true,
-		},
+			getters: true
+		}
 	}
 );
 
