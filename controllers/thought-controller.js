@@ -1,5 +1,5 @@
 
-const {  Thought } = require('../models');
+const {  Thought, User } = require('../models');
 
 const thoughtController = {
 getAllThought(req, res){
@@ -25,11 +25,28 @@ getThoughtById({ params }, res){
     });
 },
 
-// create Thought
+// create Thought POST /api/thought
 createThought({body},res) {
+    let info;
     Thought.create(body)
-    .then((dbThoughtData)=> res.json(dbThoughtData))
-    .catch((err) => res.status(400).json(err));
+    .then((dbThoughtData) => {
+        info = dbThoughtData;
+       return User.findOneAndUpdate(
+			// filter or where clause
+			{ _id: body.userId },
+			// add to set push into array
+			{ $push: { thoughts: dbThoughtData._id } },
+			{ new: true}
+		)
+        // res.json(dbThoughtData)
+    })
+    .then((data) => {
+        res.json(data)
+    })
+    .catch((err) => {
+        console.log(info);
+        res.status(400).json(err)
+    });
 },
 
 updateThought({ params,body}, res) {

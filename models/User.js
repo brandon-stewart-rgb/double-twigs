@@ -15,7 +15,7 @@ const UserSchema = new Schema(
 			required: [true, 'Email is required'],
 			match: [
 				/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-				'Please fill a valid email address'
+				'Please fill in a valid email address'
 			]
 		},
 
@@ -41,19 +41,3 @@ const User = model('User', UserSchema);
 
 module.exports = User;
 
-// var PersonSchema = new Schema(
-// 	{
-// 		name: {
-// 			first: String,
-// 			last: String
-// 		}
-// 	},
-// 	{
-// 		// toObject: {
-// 		// 	virtuals: true,
-// 		// },
-// 		toJSON: {
-// 			virtuals: true
-// 		}
-// 	}
-// );

@@ -60,8 +60,10 @@ const userController = {
 		// The $addToSet operator adds a value to an array unless the value is already present,
 		// in which case $addToSet does nothing to that array.
 		User.findOneAndUpdate(
-			{ _id: params.friendId },
-			{ $addToSet: { friends: params.userId } },
+			// filter or where clause
+			{ _id: params.userId },
+			// add to set push into array
+			{ $addToSet: { friends: params.friendId } },
 			{ new: true }
 		)
 			.then((dbUserData) => {
@@ -75,13 +77,13 @@ const userController = {
 			})
 			.catch((err) => res.status(400).json(err));
 	},
-	//delete friend | DELETE api/user/:userId/friends/friendId
+	//delete friend | DELETE api/user/:userId/friends/:friendId
 	deleteFriend({ params }, res) {
 		// The $pull operator removes from an existing array all instances of a value or values that match a specified condition.
-        // remove friendId
+		// remove friendId
 		User.findOneAndUpdate(
-			{ _id: params.friendId },
-			{ $pull: { friends: params.userId } },
+			{ _id: params.userId },
+			{ $pull: { friends: params.friendId } },
 			{ new: true, runValidators: true }
 		)
 			.then((dbUserData) => {
@@ -89,26 +91,25 @@ const userController = {
 					res.status(404).json({ message: 'no user found with this id' });
 					return;
 				}
-                // remove userId
+				// remove userId
 				User.findOneAndUpdate(
 					{ _id: params.friendId },
 					{ $pull: { friends: params.userId } },
-					{ new: true,runValidators: true }
+					{ new: true, runValidators: true }
 				)
-                .then(dbUserData2 => {
-                    if(!dbUserData2) {
-                        res.status(404).json({ message: 'No user found with this friendId' })
-                        return;
-                    }
+					.then((dbUserData) => {
+						if (!dbUserData) {
+							res.status(404).json({ message: 'No user found with this friendId' });
+							return;
+						}
 
-				res.json({ message: 'Success, you have deleted your friend' });
+						res.json({ message: 'Success, you have deleted your friend' });
+					})
 
+					.catch((err) => res.status(400).json(err));
 			})
-
 			.catch((err) => res.status(400).json(err));
-        })
-        .catch((err) => res.status(400).json(err));
-	}
+	},
 };
 
 module.exports = userController;
