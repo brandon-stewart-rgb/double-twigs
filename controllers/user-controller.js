@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User, Thought } = require('../models');
 
 const userController = {
 	getAllUser(req, res) {
@@ -9,18 +9,22 @@ const userController = {
 				res.status(400).json(err);
 			});
 	},
-	//get one user |  GET /api/user
+	//get single user |  GET /api/user/:id
 	getUserById({ params }, res) {
-		User.findOne({ _id: params.id })
-			.then((dbUserData) => {
-				if (!dbUserData) {
-					res.status(404).json({ message: 'no user found with that id' });
-					return;
-				}
+		User.findOne({
+			 _id: params.id
 			})
-			.catch((err) => {
-				console.log(err);
-				res.status(400).json(err);
+			// populate or show all thought and friend data
+			.populate({
+				path: 'thoughts',
+				path: 'friends',
+				select: '-__v'
+			})
+			.select('-__v')
+			.then(dbUserData => res.json(dbUserData))
+			.catch(err => {
+			  console.log(err);
+			  res.sendStatus(400);
 			});
 	},
 

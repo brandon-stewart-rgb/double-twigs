@@ -13,16 +13,11 @@ getAllThought(req, res){
 //get one Thought
 getThoughtById({ params }, res){
     Thought.findOne({ _id: params.id })
-    .then((dbThoughtData) => {
-        if(!dbThoughtData) {
-            res.status(404).json({ message: 'no Thought found with that id' });
-            return;
-        }
-    })
-    .catch((err)=> {
-        console.log(err);
-        res.status(400).json(err);
-    });
+    .then(dbThoughtData => res.json(dbThoughtData))
+			.catch(err => {
+			  console.log(err);
+			  res.sendStatus(400);
+			});
 },
 
 // create Thought POST /api/thought
@@ -41,8 +36,10 @@ createThought({body},res) {
         // res.json(dbThoughtData)
     })
     .then((data) => {
+
         res.json(data)
     })
+    // an implicit return with curly braces lets us do more than one thing such as the console.log
     .catch((err) => {
         console.log(info);
         res.status(400).json(err)
@@ -62,7 +59,7 @@ updateThought({ params,body}, res) {
 },
 
 //delete Thought
-deleteThought({ param }, res){
+deleteThought({ params }, res){
     Thought.findOneAndDelete({ _id: params.id })
     .then(dbThoughtData => {
         if(!dbThoughtData){
