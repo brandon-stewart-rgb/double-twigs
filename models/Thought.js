@@ -1,11 +1,11 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, Types } = require('mongoose');
 const moment = require('moment');
 
 const ReactionSchema = new Schema(
 	{
 		reactionId: {
 			type: Schema.Types.ObjectId,
-			default: " "
+			default: () => new Types.ObjectId()
 		},
 		reactionBody: {
 			type: String,
@@ -49,16 +49,15 @@ const ThoughtSchema = new Schema(
 		},
 		username: {
 			type: String,
-			required: true
+			required: true,
+			ref: 'User'
 		},
-		// reactions : [{ type: Schema.Types.ObjectId,  ref: 'Reaction'}]
+		// reactions array of subdocuments
 		reactions: [ReactionSchema]
 	},
 
 	{
-		// toObject: {
-		// 	virtuals: true,
-		// },
+		
 		toJSON: {
 			virtuals: true,
 			getters: true
