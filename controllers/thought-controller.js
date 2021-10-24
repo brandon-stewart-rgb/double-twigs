@@ -17,7 +17,7 @@ getAllThought(req, res){
     });
 },
 //get one Thought
-getThoughtById({ params }, res){
+getThoughtById({ params },  res){
     Thought.findOne({ _id: params.id })
     .then(dbThoughtData => res.json(dbThoughtData))
 			.catch(err => {
